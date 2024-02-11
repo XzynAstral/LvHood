@@ -22,18 +22,33 @@
             background: rgba(0, 0, 0, 0.5);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            display: none; /* Hide all containers by default */
+            display: none;
+            /* Animation styles */
+            opacity: 0;
+            animation: slideInLeft 0.8s ease-in-out forwards;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         #tabs {
             display: flex;
             justify-content: space-around;
-            background-color: #333;
+            background: #1f1f1f; /* Dark background color */
             padding: 10px;
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 1;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for a modern look */
         }
 
         .tab {
@@ -41,17 +56,12 @@
             color: white;
             text-decoration: none;
             font-size: 16px;
+            padding: 10px; /* Add padding for better spacing */
+            transition: color 0.3s ease; /* Smooth color transition */
         }
 
-        #lvHoodTab, #socialTab, #developersTab, #crewsTab, #updateTab {
-            cursor: pointer;
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-        }
-
-        #updateTab {
-            z-index: 2;
+        .tab:hover {
+            color: #7289DA; /* Change color on hover */
         }
 
         #discordWidget {
@@ -70,20 +80,21 @@
             margin-top: 20px;
         }
 
-        #lvHoodContent, #socialContent, #developersContent, #crewsContent, #updateContent {
+        #lvHoodContent, #socialContent, #developersContent, #crewsContent, #updateContent, #websiteUpdatesContent {
             display: none;
         }
 
-        #updateContent {
+        #updateContent, #websiteUpdatesContent {
             text-align: center;
             padding: 20px;
             color: #7289DA;
             font-family: 'Arial', sans-serif;
         }
 
-        #updateContent pre {
+        #updateContent pre, #websiteUpdatesContent pre {
             white-space: pre-wrap;
             margin: 0;
+            color: #7289DA; /* Blue color for text */
         }
 
         h1, h2, h3, p {
@@ -103,7 +114,8 @@
         <div class="tab" id="socialTab" onclick="showTab('social')">Social</div>
         <div class="tab" id="developersTab" onclick="showTab('developers')">Developers</div>
         <div class="tab" id="crewsTab" onclick="showTab('crews')">Crews</div>
-        <div class="tab" id="updateTab" onclick="fetchUpdateContent(event)">Update</div>
+        <div class="tab" id="updateTab" onclick="fetchUpdateContent()">Update</div>
+        <div class="tab" id="websiteUpdatesTab" onclick="fetchWebsiteUpdates()">Website Updates</div>
     </div>
 
     <div class="container" id="lvHoodContent">
@@ -129,12 +141,18 @@
         <p>Special thanks to the talented individuals who contributed to the development of lv Hood:</p>
         <ul>
             <li>Developer Pengwin</li>
-            <li>Developer Doritos </li>
+            <li>Developer Doritos</li>
             <li>RobloxThot</li>
-            <li>Developer Xzyn </li>
+            <li>Developer Xzyn</li>
             <li>Gun Designer Usrmd</li>
             <li>Tester wynnech</li>
         </ul>
+    
+        <!-- New container for website credits -->
+        <div id="websiteCredits">
+            <h2>Website Credits</h2>
+            <p>Website created by Xzyn.</p>
+        </div>
     </div>
 
     <div class="container" id="crewsContent">
@@ -152,33 +170,46 @@
         <p>Loading update content...</p>
     </div>
 
+    <div class="container" id="websiteUpdatesContent">
+        <h1>lv Hood - Website Updates</h1>
+        <p>Loading website update content...</p>
+    </div>
+
     <script>
         // Get the active tab from localStorage or default to 'lvHood'
         const activeTab = localStorage.getItem('activeTab') || 'lvHood';
-    
+
         function showTab(tabName) {
             hideAllContent();
-    
+
             if (tabName === 'update') {
                 fetchUpdateContent(); // Fetch update content immediately
+            } else if (tabName === 'websiteUpdates') {
+                fetchWebsiteUpdates(); // Fetch website update content immediately
             }
-    
-            document.getElementById(tabName + 'Content').style.display = 'block';
-            document.getElementById(tabName + 'Tab').style.color = '#7289DA';
-    
-            // Store the active tab in localStorage
-            localStorage.setItem('activeTab', tabName);
+
+            const contentElement = document.getElementById(tabName + 'Content');
+            const tabElement = document.getElementById(tabName + 'Tab');
+
+            if (contentElement && tabElement) {
+                contentElement.style.display = 'block';
+                contentElement.style.animation = 'slideInLeft 0.8s ease-in-out forwards';
+                tabElement.style.color = '#7289DA';
+
+                // Store the active tab in localStorage
+                localStorage.setItem('activeTab', tabName);
+            }
         }
-    
+
         async function fetchUpdateContent() {
             const githubUrl = 'https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/updates.txt';
-    
+
             hideAllContent();
-    
+
             document.getElementById('updateContent').innerHTML = '<p>Loading update content...</p>';
             document.getElementById('updateContent').style.display = 'block';
             document.getElementById('updateTab').style.color = '#7289DA';
-    
+
             try {
                 const response = await fetch(githubUrl);
                 const data = await response.text();
@@ -190,21 +221,43 @@
                 document.getElementById('updateContent').innerHTML = errorMessage;
             }
         }
-    
+
+        async function fetchWebsiteUpdates() {
+            const githubUrl = 'https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/websiteupdates';
+
+            hideAllContent();
+
+            document.getElementById('websiteUpdatesContent').innerHTML = '<p>Loading website update content...</p>';
+            document.getElementById('websiteUpdatesContent').style.display = 'block';
+            document.getElementById('websiteUpdatesTab').style.color = '#7289DA';
+
+            try {
+                const response = await fetch(githubUrl);
+                const data = await response.text();
+                const formattedData = `<pre>${data}</pre>`;
+                document.getElementById('websiteUpdatesContent').innerHTML = formattedData;
+            } catch (error) {
+                console.error('Error fetching or displaying website update content:', error);
+                const errorMessage = '<p>Error fetching or displaying website update content</p>';
+                document.getElementById('websiteUpdatesContent').innerHTML = errorMessage;
+            }
+        }
+
         function hideAllContent() {
-            const tabNames = ['lvHood', 'social', 'developers', 'crews', 'update'];
-    
+            const tabNames = ['lvHood', 'social', 'developers', 'crews', 'update', 'websiteUpdates'];
+
             for (const tabName of tabNames) {
                 const contentElement = document.getElementById(tabName + 'Content');
                 const tabElement = document.getElementById(tabName + 'Tab');
-    
+
                 if (contentElement && tabElement) {
                     contentElement.style.display = 'none';
+                    contentElement.style.animation = ''; // Reset animation
                     tabElement.style.color = 'white';
                 }
             }
         }
-    
+
         // Show the active tab on page load
         showTab(activeTab);
     </script>
