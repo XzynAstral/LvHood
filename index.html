@@ -80,21 +80,33 @@
             margin-top: 20px;
         }
 
-        #lvHoodContent, #socialContent, #developersContent, #crewsContent, #updateContent, #websiteUpdatesContent {
-            display: none;
-        }
-
-        #updateContent, #websiteUpdatesContent {
-            text-align: center;
+        #updateContent {
+            max-width: 800px;
+            margin: 60px auto; /* Center the container horizontally */
             padding: 20px;
-            color: #7289DA;
-            font-family: 'Arial', sans-serif;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+            text-align: center; /* Center text within the container */
+            /* Animation styles */
+            opacity: 0;
+            animation: slideInLeft 0.8s ease-in-out forwards;
         }
 
-        #updateContent pre, #websiteUpdatesContent pre {
+        .updateContainer {
+            text-align: left; /* Align text to the left within the container */
+            margin-top: 20px;
+        }
+
+        .updateContainer h2 {
+            color: #7289DA;
+        }
+
+        .updateContent pre {
             white-space: pre-wrap;
             margin: 0;
-            color: #7289DA; /* Blue color for text */
+            color: #7289DA;
         }
 
         h1, h2, h3, p {
@@ -115,7 +127,6 @@
         <div class="tab" id="developersTab" onclick="showTab('developers')">Developers</div>
         <div class="tab" id="crewsTab" onclick="showTab('crews')">Crews</div>
         <div class="tab" id="updateTab" onclick="fetchUpdateContent()">Update</div>
-        <div class="tab" id="websiteUpdatesTab" onclick="fetchWebsiteUpdates()">Website Updates</div>
     </div>
 
     <div class="container" id="lvHoodContent">
@@ -167,26 +178,21 @@
 
     <div class="container" id="updateContent">
         <h1>lv Hood - Update Log</h1>
-        <p>Loading update content...</p>
-    </div>
-
-    <div class="container" id="websiteUpdatesContent">
-        <h1>lv Hood - Website Updates</h1>
-        <p>Loading website update content...</p>
+        <div class="updateContainer" id="gameUpdatesContainer">
+            <h2>Game Updates</h2>
+            <p>Loading game update content...</p>
+        </div>
+        <div class="updateContainer" id="websiteUpdatesContainer">
+            <h2>Website Updates</h2>
+            <p>Loading website update content...</p>
+        </div>
     </div>
 
     <script>
-        // Get the active tab from localStorage or default to 'lvHood'
         const activeTab = localStorage.getItem('activeTab') || 'lvHood';
 
         function showTab(tabName) {
             hideAllContent();
-
-            if (tabName === 'update') {
-                fetchUpdateContent(); // Fetch update content immediately
-            } else if (tabName === 'websiteUpdates') {
-                fetchWebsiteUpdates(); // Fetch website update content immediately
-            }
 
             const contentElement = document.getElementById(tabName + 'Content');
             const tabElement = document.getElementById(tabName + 'Tab');
@@ -196,55 +202,46 @@
                 contentElement.style.animation = 'slideInLeft 0.8s ease-in-out forwards';
                 tabElement.style.color = '#7289DA';
 
-                // Store the active tab in localStorage
                 localStorage.setItem('activeTab', tabName);
             }
         }
 
         async function fetchUpdateContent() {
-            const githubUrl = 'https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/updates.txt';
+            const githubUrlGameUpdates = 'https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/updates.txt';
+            const githubUrlWebsiteUpdates = 'https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/websiteupdates';
 
             hideAllContent();
 
-            document.getElementById('updateContent').innerHTML = '<p>Loading update content...</p>';
+            document.getElementById('gameUpdatesContainer').innerHTML = '<p>Loading game update content...</p>';
+            document.getElementById('websiteUpdatesContainer').innerHTML = '<p>Loading website update content...</p>';
             document.getElementById('updateContent').style.display = 'block';
             document.getElementById('updateTab').style.color = '#7289DA';
 
             try {
-                const response = await fetch(githubUrl);
-                const data = await response.text();
-                const formattedData = `<pre>${data}</pre>`;
-                document.getElementById('updateContent').innerHTML = formattedData;
-            } catch (error) {
-                console.error('Error fetching or displaying update content:', error);
-                const errorMessage = '<p>Error fetching or displaying update content</p>';
-                document.getElementById('updateContent').innerHTML = errorMessage;
+                const responseGameUpdates = await fetch(githubUrlGameUpdates);
+                const dataGameUpdates = await responseGameUpdates.text();
+                const formattedDataGameUpdates = `<pre>${dataGameUpdates}</pre>`;
+                document.getElementById('gameUpdatesContainer').innerHTML = formattedDataGameUpdates;
+            } catch (errorGameUpdates) {
+                console.error('Error fetching or displaying game update content:', errorGameUpdates);
+                const errorMessageGameUpdates = '<p>Error fetching or displaying game update content</p>';
+                document.getElementById('gameUpdatesContainer').innerHTML = errorMessageGameUpdates;
             }
-        }
-
-        async function fetchWebsiteUpdates() {
-            const githubUrl = 'https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/websiteupdates';
-
-            hideAllContent();
-
-            document.getElementById('websiteUpdatesContent').innerHTML = '<p>Loading website update content...</p>';
-            document.getElementById('websiteUpdatesContent').style.display = 'block';
-            document.getElementById('websiteUpdatesTab').style.color = '#7289DA';
 
             try {
-                const response = await fetch(githubUrl);
-                const data = await response.text();
-                const formattedData = `<pre>${data}</pre>`;
-                document.getElementById('websiteUpdatesContent').innerHTML = formattedData;
-            } catch (error) {
-                console.error('Error fetching or displaying website update content:', error);
-                const errorMessage = '<p>Error fetching or displaying website update content</p>';
-                document.getElementById('websiteUpdatesContent').innerHTML = errorMessage;
+                const responseWebsiteUpdates = await fetch(githubUrlWebsiteUpdates);
+                const dataWebsiteUpdates = await responseWebsiteUpdates.text();
+                const formattedDataWebsiteUpdates = `<pre>${dataWebsiteUpdates}</pre>`;
+                document.getElementById('websiteUpdatesContainer').innerHTML = formattedDataWebsiteUpdates;
+            } catch (errorWebsiteUpdates) {
+                console.error('Error fetching or displaying website update content:', errorWebsiteUpdates);
+                const errorMessageWebsiteUpdates = '<p>Error fetching or displaying website update content</p>';
+                document.getElementById('websiteUpdatesContainer').innerHTML = errorMessageWebsiteUpdates;
             }
         }
 
         function hideAllContent() {
-            const tabNames = ['lvHood', 'social', 'developers', 'crews', 'update', 'websiteUpdates'];
+            const tabNames = ['lvHood', 'social', 'developers', 'crews', 'update'];
 
             for (const tabName of tabNames) {
                 const contentElement = document.getElementById(tabName + 'Content');
@@ -252,13 +249,12 @@
 
                 if (contentElement && tabElement) {
                     contentElement.style.display = 'none';
-                    contentElement.style.animation = ''; // Reset animation
+                    contentElement.style.animation = '';
                     tabElement.style.color = 'white';
                 }
             }
         }
 
-        // Show the active tab on page load
         showTab(activeTab);
     </script>
 
