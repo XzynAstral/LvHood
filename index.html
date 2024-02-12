@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>lv Hood</title>
+    <!-- Google Fonts - Roboto and Noto Sans -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap">
 
     <style>
         body {
-            background: linear-gradient(to right, #000000, #1a1a1a);
-            color: white;
-            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #121212, #333333);
+            color: #ffffff;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
             overflow: hidden;
@@ -19,41 +22,39 @@
             max-width: 800px;
             margin: 60px auto 0;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             display: none;
             /* Animation styles */
             opacity: 0;
-            animation: slideInLeft 0.8s ease-in-out forwards;
+            animation: fadeIn 0.8s ease-in-out forwards;
         }
 
-        @keyframes slideInLeft {
+        @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateX(-100%);
             }
             to {
                 opacity: 1;
-                transform: translateX(0);
             }
         }
 
         #tabs {
             display: flex;
             justify-content: space-around;
-            background: #1f1f1f; /* Dark background color */
+            background: #282828; /* Dark background color */
             padding: 10px;
             position: fixed;
             top: 0;
             width: 100%;
             z-index: 1;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Box shadow for a modern look */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Box shadow for a modern look */
         }
 
         .tab {
             cursor: pointer;
-            color: white;
+            color: #ffffff;
             text-decoration: none;
             font-size: 16px;
             padding: 10px; /* Add padding for better spacing */
@@ -64,18 +65,13 @@
             color: #7289DA; /* Change color on hover */
         }
 
-        #discordWidget {
-            margin-top: 20px;
-            display: none;
-        }
-
         #joinButton {
             background-color: #7289DA;
             color: white;
-            padding: 10px 20px;
-            font-size: 14px;
+            padding: 12px 24px;
+            font-size: 16px;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 8px;
             display: inline-block;
             margin-top: 20px;
         }
@@ -84,19 +80,21 @@
             max-width: 800px;
             margin: 60px auto; /* Center the container horizontally */
             padding: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             display: none;
             text-align: center; /* Center text within the container */
             /* Animation styles */
             opacity: 0;
-            animation: slideInLeft 0.8s ease-in-out forwards;
+            animation: fadeIn 0.8s ease-in-out forwards;
         }
 
         .updateContainer {
-            text-align: left; /* Align text to the left within the container */
+            text-align: center; /* Center text within the container */
             margin-top: 20px;
+            font-family: 'Noto Sans', sans-serif; /* Apply Noto Sans font */
+            color: #87CEEB; /* Light blue color */
         }
 
         .updateContainer h2 {
@@ -117,46 +115,56 @@
             color: #7289DA;
             text-decoration: none;
         }
+
+        /* Developer name colors */
+        .developerName {
+            color: #87CEEB; /* Light blue color for Developer Pengwin */
+        }
+
+        /* Emoji styles */
+        .developerEmoji {
+            margin-right: 5px;
+        }
+
     </style>
 </head>
 <body>
 
     <div id="tabs">
         <div class="tab" id="lvHoodTab" onclick="showTab('lvHood')">Game Info</div>
-        <div class="tab" id="socialTab" onclick="showTab('social')">Social</div>
-        <div class="tab" id="developersTab" onclick="showTab('developers')">Developers</div>
-        <div class="tab" id="crewsTab" onclick="showTab('crews')">Crews</div>
-        <div class="tab" id="updateTab" onclick="fetchUpdateContent()">Update</div>
+        <div class="tab" id="socialTab" onclick="showTab('social')">Social Media</div>
+        <div class="tab" id="developersTab" onclick="showTab('developers')">Meet the Developers</div>
+        <div class="tab" id="crewsTab" onclick="showTab('crews')">Join a Crew</div>
+        <div class="tab" id="updateTab" onclick="fetchUpdateContent()">Latest Updates</div>
     </div>
 
     <div class="container" id="lvHoodContent">
         <h1>lv Hood - Game Info</h1>
-        <p>lv Hood is an exciting game where you can engage in intense gunfights, participate in stomping wars, and enjoy custom stomp effects.</p>
-        <p>Join the action and be part of the lv Hood community!</p>
+        <p>Discover the thrilling world of lv Hood, where intense gunfights and stomping wars await you. Experience custom stomp effects and become part of the lv Hood community!</p>
         <a id="joinButton" href="https://discord.com/invite/DrPBvbTnj4" target="_blank">Join Hood Studios Entertainment Discord</a>
     </div>
 
     <div class="container" id="socialContent">
-        <h1>lv Hood - Social</h1>
-        <p>Connect with us on various social platforms:</p>
+        <h1>lv Hood - Social Media</h1>
+        <p>Connect with us on various social platforms to stay updated:</p>
         <ul>
-            <li>YoutubeChannel: <a href="https://www.youtube.com/@HoodStudio_Topic" target="_blank">Hood Studios Entertainment On YouTube</a></li>
-            <li>RobloxGame: <a href="https://www.roblox.com/games/15516270847/Valentine-Lv-Hood" target="_blank">Roblox Game</a></li>
-            <li>Roblox Group: <a href="https://www.roblox.com/groups/15060252/The-Shadow-Gamer#!/about" target="_blank">lv Hood Roblox Group</a></li>
-            <li>Roblox Clothing Group: <a href="https://www.roblox.com/groups/11188665/New-Beginnings-Clothing#!/store" target="_blank">lv Hood Clothing Group</a></li>
+            <li>YouTube Channel: <a href="https://www.youtube.com/@HoodStudio_Topic" target="_blank">Hood Studios Entertainment on YouTube</a></li>
+            <li>Roblox Game: <a href="https://www.roblox.com/games/15516270847/Valentine-Lv-Hood" target="_blank">Play lv Hood on Roblox</a></li>
+            <li>Roblox Group: <a href="https://www.roblox.com/groups/15060252/The-Shadow-Gamer#!/about" target="_blank">Join lv Hood Roblox Group</a></li>
+            <li>Roblox Clothing Group: <a href="https://www.roblox.com/groups/11188665/New-Beginnings-Clothing#!/store" target="_blank">Explore lv Hood Clothing Group</a></li>
         </ul>
     </div>
 
     <div class="container" id="developersContent">
-        <h1>lv Hood - Developers</h1>
+        <h1>lv Hood - Meet the Developers</h1>
         <p>Special thanks to the talented individuals who contributed to the development of lv Hood:</p>
         <ul>
-            <li>Developer Pengwin</li>
-            <li>Developer Doritos</li>
-            <li>RobloxThot</li>
-            <li>Developer Xzyn</li>
-            <li>Gun Designer Usrmd</li>
-            <li>Tester wynnech</li>
+            <li class="developerName"><span class="developerEmoji">⚒️</span>Developer Pengwin</li>
+            <li class="developerName"><span class="developerEmoji">⚒️</span>Developer Doritos</li>
+            <li class="developerName"><span class="developerEmoji">⚒️</span>RobloxThot</li>
+            <li class="developerName"><span class="developerEmoji">⚒️</span>Developer Xzyn</li>
+            <li class="developerName"><span class="developerEmoji">⚒️</span>Tester wynnech</li>
+            <li class="developerName"><span class="developerEmoji">🔫</span>Gun Designer Usrmd</li>
         </ul>
     
         <!-- New container for website credits -->
@@ -167,24 +175,26 @@
     </div>
 
     <div class="container" id="crewsContent">
-        <h1>lv Hood - Crews</h1>
-        <p>Join one of the following crews in lv Hood:</p>
+        <h1>lv Hood - Join a Crew</h1>
+        <p>Explore the lv Hood crews and choose the one that suits you:</p>
         <ul>
-            <li><a href="https://www.roblox.com/groups/16218098/Xzyn-alt-shop#!/about" target="_blank">YZNS</a></li>
-            <li><a href="https://www.roblox.com/groups/33832534/Cursed#!/about" target="_blank">死 Cursed Spirits</a></li>
+            <li><a href="https://www.roblox.com/groups/16218098/Xzyn-alt-shop#!/about" target="_blank">YZNS Crew</a></li>
+            <li><a href="https://www.roblox.com/groups/33832534/Cursed#!/about" target="_blank">死 Cursed Spirits Crew</a></li>
             <!-- Add more crews as needed -->
         </ul>
     </div>
 
     <div class="container" id="updateContent">
-        <h1>lv Hood - Update Log</h1>
+        <h1>lv Hood - Latest Updates</h1>
         <div class="updateContainer" id="gameUpdatesContainer">
             <h2>Game Updates</h2>
-            <p>Loading game update content...</p>
+            <p>Discover new in-game content, features, and improvements when lv Hood releases exciting game updates!</p>
+            <p class="updateContentText">Loading game update content...</p>
         </div>
         <div class="updateContainer" id="websiteUpdatesContainer">
             <h2>Website Updates</h2>
-            <p>Loading website update content...</p>
+            <p>Stay informed about changes to the lv Hood website, including new features and enhancements!</p>
+            <p class="updateContentText">Loading website update content...</p>
         </div>
     </div>
 
@@ -199,7 +209,7 @@
 
             if (contentElement && tabElement) {
                 contentElement.style.display = 'block';
-                contentElement.style.animation = 'slideInLeft 0.8s ease-in-out forwards';
+                contentElement.style.animation = 'fadeIn 0.8s ease-in-out forwards';
                 tabElement.style.color = '#7289DA';
 
                 localStorage.setItem('activeTab', tabName);
@@ -212,8 +222,8 @@
 
             hideAllContent();
 
-            document.getElementById('gameUpdatesContainer').innerHTML = '<p>Loading game update content...</p>';
-            document.getElementById('websiteUpdatesContainer').innerHTML = '<p>Loading website update content...</p>';
+            document.getElementById('gameUpdatesContainer').innerHTML = '<p class="updateContentText">Discover new in-game content, features, and improvements when lv Hood releases exciting game updates!</p>';
+            document.getElementById('websiteUpdatesContainer').innerHTML = '<p class="updateContentText">Stay informed about changes to the lv Hood website, including new features and enhancements!</p>';
             document.getElementById('updateContent').style.display = 'block';
             document.getElementById('updateTab').style.color = '#7289DA';
 
@@ -224,7 +234,7 @@
                 document.getElementById('gameUpdatesContainer').innerHTML = formattedDataGameUpdates;
             } catch (errorGameUpdates) {
                 console.error('Error fetching or displaying game update content:', errorGameUpdates);
-                const errorMessageGameUpdates = '<p>Error fetching or displaying game update content</p>';
+                const errorMessageGameUpdates = '<p class="updateContentText">Error fetching or displaying game update content</p>';
                 document.getElementById('gameUpdatesContainer').innerHTML = errorMessageGameUpdates;
             }
 
@@ -235,7 +245,7 @@
                 document.getElementById('websiteUpdatesContainer').innerHTML = formattedDataWebsiteUpdates;
             } catch (errorWebsiteUpdates) {
                 console.error('Error fetching or displaying website update content:', errorWebsiteUpdates);
-                const errorMessageWebsiteUpdates = '<p>Error fetching or displaying website update content</p>';
+                const errorMessageWebsiteUpdates = '<p class="updateContentText">Error fetching or displaying website update content</p>';
                 document.getElementById('websiteUpdatesContainer').innerHTML = errorMessageWebsiteUpdates;
             }
         }
