@@ -181,9 +181,9 @@
             }
         }
 
-        async function fetchUpdateContent() {
+        function fetchUpdateContent() {
             const githubUrlGameUpdates = 'https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/updates.txt';
-            const githubUrlWebsiteUpdates = 'https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/websiteupdates';
+            const githubUrlWebsiteUpdates = 'https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/websiteupdates.txt';
 
             hideAllContent();
 
@@ -192,27 +192,42 @@
             document.getElementById('updateContent').style.display = 'block';
             document.getElementById('updateTab').style.color = '#7289DA';
 
-            try {
-                const responseGameUpdates = await fetch(githubUrlGameUpdates);
-                const dataGameUpdates = await responseGameUpdates.text();
-                const formattedDataGameUpdates = `<pre>${dataGameUpdates}</pre>`;
-                document.getElementById('gameUpdatesContainer').innerHTML = formattedDataGameUpdates;
-            } catch (errorGameUpdates) {
-                console.error('Error fetching or displaying game update content:', errorGameUpdates);
-                const errorMessageGameUpdates = '<p class="updateContentText">Error fetching or displaying game update content</p>';
-                document.getElementById('gameUpdatesContainer').innerHTML = errorMessageGameUpdates;
+            function handleResponse(containerId, data) {
+                const container = document.getElementById(containerId);
+                container.innerHTML = `<pre>${data}</pre>`;
             }
 
-            try {
-                const responseWebsiteUpdates = await fetch(githubUrlWebsiteUpdates);
-                const dataWebsiteUpdates = await responseWebsiteUpdates.text();
-                const formattedDataWebsiteUpdates = `<pre>${dataWebsiteUpdates}</pre>`;
-                document.getElementById('websiteUpdatesContainer').innerHTML = formattedDataWebsiteUpdates;
-            } catch (errorWebsiteUpdates) {
-                console.error('Error fetching or displaying website update content:', errorWebsiteUpdates);
-                const errorMessageWebsiteUpdates = '<p class="updateContentText">Error fetching or displaying website update content</p>';
-                document.getElementById('websiteUpdatesContainer').innerHTML = errorMessageWebsiteUpdates;
+            function handleError(containerId) {
+                console.error(`Error fetching or displaying content for ${containerId}`);
+                const errorMessage = '<p class="updateContentText">Error fetching or displaying content</p>';
+                document.getElementById(containerId).innerHTML = errorMessage;
             }
+
+            const xhrGameUpdates = new XMLHttpRequest();
+            xhrGameUpdates.open('GET', githubUrlGameUpdates, true);
+            xhrGameUpdates.onreadystatechange = function () {
+                if (xhrGameUpdates.readyState === 4) {
+                    if (xhrGameUpdates.status === 200) {
+                        handleResponse('gameUpdatesContainer', xhrGameUpdates.responseText);
+                    } else {
+                        handleError('gameUpdatesContainer');
+                    }
+                }
+            };
+            xhrGameUpdates.send();
+
+            const xhrWebsiteUpdates = new XMLHttpRequest();
+            xhrWebsiteUpdates.open('GET', githubUrlWebsiteUpdates, true);
+            xhrWebsiteUpdates.onreadystatechange = function () {
+                if (xhrWebsiteUpdates.readyState === 4) {
+                    if (xhrWebsiteUpdates.status === 200) {
+                        handleResponse('websiteUpdatesContainer', xhrWebsiteUpdates.responseText);
+                    } else {
+                        handleError('websiteUpdatesContainer');
+                    }
+                }
+            };
+            xhrWebsiteUpdates.send();
         }
 
         function hideAllContent() {
