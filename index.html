@@ -38,6 +38,23 @@
             margin-left: 10px;
         }
 
+        #tabs {
+            display: flex;
+            justify-content: space-around;
+            background: transparent;
+            padding: 10px;
+            position: fixed;
+            top: 60px; /* Adjusted from 40px */
+            left: 0;
+            right: 0;
+            z-index: 1;
+            opacity: 0;
+            transition: transform 0.5s, opacity 0.5s; /* Added opacity transition */
+            transform: translateY(-100%);
+            color: #ffffff;
+            box-shadow: none;
+        }
+
         .tab {
             cursor: pointer;
             color: #ffffff;
@@ -49,24 +66,10 @@
 
         .tab:hover {
             color: #2a82da;
-        }
-
-        #tabs {
-            display: flex;
-            justify-content: space-around;
-            background: transparent;
-            padding: 10px;
-            position: fixed;
-            top: 40px;
-            left: 0;
-            right: 0;
-            z-index: 1;
-            opacity: 1;
-            transition: transform 0.5s;
-            transform: translateY(0);
-            color: #ffffff;
             box-shadow: none;
         }
+        
+
 
         .container {
             max-width: 800px;
@@ -155,7 +158,6 @@
 </head>
 
 <body>
-
     <div id="header">
         <div id="menuIcon" onclick="toggleTabs()">≡</div>
         <div id="searchBarContainer">
@@ -163,8 +165,7 @@
         </div>
     </div>
 
-    <div class="overlay" onclick="toggleTabs()"></div>
-
+    <!-- Moved the tabs inside the header -->
     <div id="tabs">
         <div class="tab" id="lvHoodTab" onclick="showTab('lvHood')">Game Info</div>
         <div class="tab" id="socialTab" onclick="showTab('social')">Social Media</div>
@@ -300,8 +301,10 @@
         fetchData(githubUrlWebsiteUpdates, 'websiteUpdatesContainer');
     }
 
-        function toggleTabs() {
-            const tabs = document.getElementById('tabs');
+    function toggleTabs() {
+        const tabs = document.getElementById('tabs');
+
+        if (tabs) {
             const overlay = document.querySelector('.overlay');
             const tabsOpacity = parseFloat(window.getComputedStyle(tabs).opacity);
 
@@ -317,7 +320,7 @@
                 overlay.style.opacity = '0';
             }
         }
-
+    }
         function hideAllContent() {
             const tabNames = ['lvHood', 'social', 'developers', 'crews', 'update'];
 
