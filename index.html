@@ -181,54 +181,43 @@
             }
         }
 
-        function fetchUpdateContent() {
-            const githubUrlGameUpdates = 'https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/updates.txt';
-            const githubUrlWebsiteUpdates = 'https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/websiteupdates.txt';
-
-            hideAllContent();
-
-            document.getElementById('gameUpdatesContainer').innerHTML = '<p class="updateContentText">Discover new in-game content, features, and improvements when lv Hood releases exciting game updates!</p>';
-            document.getElementById('websiteUpdatesContainer').innerHTML = '<p class="updateContentText">Stay informed about changes to the lv Hood website, including new features and enhancements!</p>';
-            document.getElementById('updateContent').style.display = 'block';
-            document.getElementById('updateTab').style.color = '#7289DA';
-
-            function handleResponse(containerId, data) {
-                const container = document.getElementById(containerId);
-                container.innerHTML = `<pre>${data}</pre>`;
-            }
-
-            function handleError(containerId) {
-                console.error(`Error fetching or displaying content for ${containerId}`);
-                const errorMessage = '<p class="updateContentText">Error fetching or displaying content</p>';
-                document.getElementById(containerId).innerHTML = errorMessage;
-            }
-
-            const xhrGameUpdates = new XMLHttpRequest();
-            xhrGameUpdates.open('GET', githubUrlGameUpdates, true);
-            xhrGameUpdates.onreadystatechange = function () {
-                if (xhrGameUpdates.readyState === 4) {
-                    if (xhrGameUpdates.status === 200) {
-                        handleResponse('gameUpdatesContainer', xhrGameUpdates.responseText);
-                    } else {
-                        handleError('gameUpdatesContainer');
-                    }
-                }
-            };
-            xhrGameUpdates.send();
-
-            const xhrWebsiteUpdates = new XMLHttpRequest();
-            xhrWebsiteUpdates.open('GET', githubUrlWebsiteUpdates, true);
-            xhrWebsiteUpdates.onreadystatechange = function () {
-                if (xhrWebsiteUpdates.readyState === 4) {
-                    if (xhrWebsiteUpdates.status === 200) {
-                        handleResponse('websiteUpdatesContainer', xhrWebsiteUpdates.responseText);
-                    } else {
-                        handleError('websiteUpdatesContainer');
-                    }
-                }
-            };
-            xhrWebsiteUpdates.send();
+    function fetchUpdateContent() {
+        const githubUrlGameUpdates = 'https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/updates.txt';
+        const githubUrlWebsiteUpdates = 'https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/websiteupdates.txt';
+    
+        hideAllContent();
+    
+        document.getElementById('gameUpdatesContainer').innerHTML = '<p class="updateContentText">Discover new in-game content, features, and improvements when lv Hood releases exciting game updates!</p>';
+        document.getElementById('websiteUpdatesContainer').innerHTML = '<p class="updateContentText">Stay informed about changes to the lv Hood website, including new features and enhancements!</p>';
+        document.getElementById('updateContent').style.display = 'block';
+        document.getElementById('updateTab').style.color = '#7289DA';
+    
+        function handleResponse(containerId, data) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `<pre>${data}</pre>`;
         }
+    
+        function handleError(containerId) {
+            console.error(`Error fetching or displaying content for ${containerId}`);
+            const errorMessage = '<p class="updateContentText">Error fetching or displaying content</p>';
+            document.getElementById(containerId).innerHTML = errorMessage;
+        }
+    
+        function fetchData(url, containerId) {
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.text();
+                })
+                .then(data => handleResponse(containerId, data))
+                .catch(error => handleError(containerId));
+        }
+    
+        fetchData(githubUrlGameUpdates, 'gameUpdatesContainer');
+        fetchData(githubUrlWebsiteUpdates, 'websiteUpdatesContainer');
+    }
 
         function hideAllContent() {
             const tabNames = ['lvHood', 'social', 'developers', 'crews', 'update'];
