@@ -2,6 +2,6 @@
   
   <p>
     <a href="https://xzynastral.github.io/" target="_blank">
-      <p>New inventory soon</p>
+      <h2>New inventorys soon</h2>
       <img width="100%" src="https://github.com/XzynAstral/xzynastral.github.io/blob/main/SneakPeekAssets/inv.png?raw=true"></a>
   </p>
