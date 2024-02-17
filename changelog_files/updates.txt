@@ -1,0 +1,2 @@
+Game update:
+Gun delay issue has been fixed
