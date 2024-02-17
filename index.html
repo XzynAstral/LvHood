@@ -158,7 +158,7 @@
     <div class="container" id="lvHoodContent">
         <h1>lv Hood - Game Info</h1>
         <p>Discover the thrilling world of lv Hood, where intense gunfights and stomping wars await you. Experience custom stomp effects and become part of the lv Hood community!</p>
-        <a id="joinButton" href="https://discord.com/invite/DrPBvbTnj4" target="_blank">Join Hood Studios Entertainment Discord</a>
+        <a id="joinButton" href="https://discord.gg/sXFK9fD9Qx" target="_blank">Lv Hood Entertainment</a>
     </div>
 
     <div class="container" id="sneakPeekContent">
@@ -231,15 +231,12 @@
                 contentElement.style.display = "block";
                 contentElement.style.animation = "fadeIn 0.8s ease-in-out forwards";
 
-                // Change color of active tab
                 tabElement.style.color = "#7289DA";
 
-                // Update sessionStorage with the active tab
                 sessionStorage.setItem("activeTab", tabName);
             }
         }
 
-        // Function to fetch update content from a specified URL
         async function fetchData(url, containerId) {
             try {
                 const response = await fetch(url);
@@ -260,32 +257,26 @@
             container.innerHTML = `<pre>${data}</pre>`;
         }
 
-        // Function to handle errors during fetch
-        function handleError(containerId) {
             console.error(`Error fetching or displaying content for ${containerId}`);
             const errorMessage = '<p class="updateContentText">Error fetching or displaying content</p>';
             document.getElementById(containerId).innerHTML = errorMessage;
         }
 
-        // Function to fetch game and website update content
         function fetchUpdateContent() {
             const githubUrlGameUpdates = "https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/updates.txt";
             const githubUrlWebsiteUpdates = "https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/websiteupdates";
 
             hideAllContent();
 
-            // Display loading messages
             document.getElementById("gameUpdatesContainer").innerHTML = '<p class="updateContentText">Loading game update content...</p>';
             document.getElementById("websiteUpdatesContainer").innerHTML = '<p class="updateContentText">Loading website update content...</p>';
             document.getElementById("updateContent").style.display = "block";
             document.getElementById("updateTab").style.color = "#7289DA";
 
-            // Fetch data for game and website updates
             fetchData(githubUrlGameUpdates, "gameUpdatesContainer");
             fetchData(githubUrlWebsiteUpdates, "websiteUpdatesContainer");
         }
 
-        // Function to fetch and display Sneak Peek content
         async function fetchSneakPeekContent() {
             hideAllContent();
 
@@ -305,27 +296,20 @@
             }
         }
 
-        // Function to handle Sneak Peek response
         function handleSneakPeekResponse(data) {
             const container = document.getElementById("sneakPeekContent");
 
-            // Remove the existing content
             container.innerHTML = '';
 
-            // Create a new div to hold the content
             const sneakPeekDiv = document.createElement('div');
             sneakPeekDiv.className = "sneakPeekContent";
 
-            // Set the inner HTML of the new div with the fetched data
             sneakPeekDiv.innerHTML = data;
 
-            // Append the new div to the container
             container.appendChild(sneakPeekDiv);
 
-            // Display the container
             container.style.display = "block";
 
-            // Change color of Sneak Peek tab
             document.getElementById("sneakPeekTab").style.color = "#7289DA";
         }
 
@@ -363,12 +347,10 @@
             }
         }
 
-        // Event listener to fetch Sneak Peek content and show the active tab on page load
         document.addEventListener("DOMContentLoaded", function () {
             showTab(activeTab);
         });
 
-        // Event listener for the Sneak Peek tab
         document.getElementById("sneakPeekTab").addEventListener("click", function () {
             fetchSneakPeekContent();
             showTab("sneakPeek");
