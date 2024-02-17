@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>lv Hood</title>
+        <!-- Google Fonts - Roboto and Noto Sans -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" />
+
+        <style>
+            body {
+                background: linear-gradient(to right, #0f1c2b, #121212);
+                color: #ffffff;
+                font-family: "Roboto", sans-serif;
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+
+            #header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                background: #1a1a1a;
+                padding: 10px;
+                position: fixed;
+                top: 0;
+                width: 100%;
+                z-index: 2;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            }
+
+            #tabs {
+                display: flex;
+                justify-content: space-around;
+                background: transparent;
+                padding: 10px;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                z-index: 3;
+                opacity: 0;
+                transition: transform 0.5s, opacity 0.5s; /* Added opacity transition */
+                transform: translateY(-100%);
+                color: #ffffff;
+                box-shadow: none;
+            }
+
+            #menuIcon {
+                cursor: pointer;
+                font-size: 24px;
+                margin-left: 20px; /* Adjust the margin as needed */
+                margin-top: 5px; /* Adjust the margin-top as needed */
+                z-index: 9999;
+            }
+
+            .tab {
+                cursor: pointer;
+                color: #ffffff;
+                text-decoration: none;
+                font-size: 16px;
+                padding: 10px;
+                transition: color 0.3s ease;
+            }
+
+            .tab:hover {
+                color: #2a82da;
+                box-shadow: none;
+            }
+
+            .container {
+                max-width: 800px;
+                margin: 110px auto 0;
+                padding: 20px;
+                background: rgba(28, 28, 28, 0.8);
+                border-radius: 15px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+                display: none;
+                opacity: 0;
+                animation: fadeIn 0.8s ease-in-out forwards;
+                position: relative;
+                z-index: 1;
+            }
+
+            @keyframes fadeIn {
+                from {
+                    opacity: 0;
+                }
+
+                to {
+                    opacity: 1;
+                }
+            }
+
+            #joinButton {
+                background-color: #2a82da;
+                color: white;
+                padding: 12px 24px;
+                font-size: 16px;
+                text-decoration: none;
+                border-radius: 8px;
+                display: inline-block;
+                margin-top: 20px;
+            }
+
+            .developerName {
+                color: #2a82da;
+            }
+
+            .developerEmoji {
+                margin-right: 5px;
+                color: #2a82da;
+            }
+
+            a {
+                color: #2a82da;
+                text-decoration: none;
+            }
+
+            #searchBarContainer {
+                width: 20%;
+                display: flex;
+                justify-content: flex-end;
+                padding: 10px;
+                position: fixed;
+                top: 0;
+                right: 0;
+                z-index: 3;
+            }
+
+            #searchBar {
+                width: 100%;
+                padding: 8px;
+                border: none;
+                border-radius: 5px;
+                background: rgba(255, 255, 255, 0.2);
+                color: #ffffff;
+                font-size: 14px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="header">
+            <div id="menuIcon" onclick="toggleTabs()">≡</div>
+            <!-- Moved the tabs inside the header -->
+            <div id="tabs">
+                <div class="tab" id="lvHoodTab" onclick="showTab('lvHood')">Game Info</div>
+                <div class="tab" id="socialTab" onclick="showTab('social')">Social Media</div>
+                <div class="tab" id="developersTab" onclick="showTab('developers')">Meet the Developers</div>
+                <div class="tab" id="crewsTab" onclick="showTab('crews')">Join a Crew</div>
+                <div class="tab" id="updateTab" onclick="fetchUpdateContent()">Latest Updates</div>
+            </div>
+        </div>
+        <div class="container" id="lvHoodContent">
+            <h1>lv Hood - Game Info</h1>
+            <p>Discover the thrilling world of lv Hood, where intense gunfights and stomping wars await you. Experience custom stomp effects and become part of the lv Hood community!</p>
+            <a id="joinButton" href="https://discord.com/invite/DrPBvbTnj4" target="_blank">Join Hood Studios Entertainment Discord</a>
+        </div>
+
+        <div class="container" id="socialContent">
+            <h1>lv Hood - Social Media</h1>
+            <p>Connect with us on various social platforms to stay updated:</p>
+            <ul>
+                <li>YouTube Channel: <a href="https://www.youtube.com/@HoodStudio_Topic" target="_blank">Hood Studios Entertainment on YouTube</a></li>
+                <li>Tiktok: <a href="https://www.tiktok.com/@xzyncxz" target="_blank">Follow us on tiktok</a></li>
+                <li>Roblox Game: <a href="https://www.roblox.com/games/15516270847/Valentine-Lv-Hood" target="_blank">Play lv Hood on Roblox</a></li>
+                <li>Roblox Group: <a href="https://www.roblox.com/groups/15060252/The-Shadow-Gamer#!/about" target="_blank">Join lv Hood Roblox Group</a></li>
+                <li>Roblox Clothing Group: <a href="https://www.roblox.com/groups/11188665/New-Beginnings-Clothing#!/store" target="_blank">Explore lv Hood Clothing Group</a></li>
+            </ul>
+        </div>
+
+        <div class="container" id="developersContent">
+            <h1>lv Hood - Meet the Developers</h1>
+            <p>Special thanks to the talented individuals who contributed to the development of lv Hood:</p>
+            <ul>
+                <li class="developerName"><span class="developerEmoji">⚒️</span>Developer Pengwin</li>
+                <li class="developerName"><span class="developerEmoji">⚒️</span>Developer Doritos</li>
+                <li class="developerName"><span class="developerEmoji">⚒️</span>RobloxThot</li>
+                <li class="developerName"><span class="developerEmoji">⚒️</span>Developer Xzyn</li>
+                <li class="developerName"><span class="developerEmoji">⚒️</span>Tester wynnech</li>
+                <li class="developerName"><span class="developerEmoji">🔫</span>Gun Designer Usrmd</li>
+            </ul>
+
+            <!-- New container for website credits -->
+            <div id="websiteCredits">
+                <h2>Website Credits</h2>
+                <p>Website created by Xzyn.</p>
+            </div>
+        </div>
+
+        <div class="container" id="crewsContent">
+            <h1>lv Hood - Join a Crew</h1>
+            <p>Explore the lv Hood crews and choose the one that suits you:</p>
+            <ul>
+                <li><a href="https://www.roblox.com/groups/16218098/Xzyn-alt-shop#!/about" target="_blank">YZNS Crew</a></li>
+                <li><a href="https://www.roblox.com/groups/33832534/Cursed#!/about" target="_blank">死 Cursed Spirits Crew</a></li>
+                <!-- Add more crews as needed -->
+            </ul>
+        </div>
+
+        <div class="container" id="updateContent">
+            <h1>lv Hood - Latest Updates</h1>
+            <div class="updateContainer" id="gameUpdatesContainer">
+                <h2>Game Updates</h2>
+                <p>Discover new in-game content, features, and improvements when lv Hood releases exciting game updates!</p>
+                <p class="updateContentText">Loading game update content...</p>
+            </div>
+            <div class="updateContainer" id="websiteUpdatesContainer">
+                <h2>Website Updates</h2>
+                <p>Stay informed about changes to the lv Hood website, including new features and enhancements!</p>
+                <p class="updateContentText">Loading website update content...</p>
+            </div>
+        </div>
+
+        <script>
+            const activeTab = localStorage.getItem("activeTab") || "lvHood";
+
+            function showTab(tabName) {
+                hideAllContent();
+
+                const contentElement = document.getElementById(tabName + "Content");
+                const tabElement = document.getElementById(tabName + "Tab");
+
+                if (contentElement && tabElement) {
+                    contentElement.style.display = "block";
+                    contentElement.style.animation = "fadeIn 0.8s ease-in-out forwards";
+
+                    const tabNames = ["lvHood", "social", "developers", "crews", "update"];
+
+                    for (const name of tabNames) {
+                        const currentTabElement = document.getElementById(name + "Tab");
+                        if (currentTabElement) {
+                            currentTabElement.style.color = "white";
+                        }
+                    }
+
+                    tabElement.style.color = "#7289DA";
+
+                    localStorage.setItem("activeTab", tabName);
+                }
+            }
+
+            function fetchUpdateContent() {
+                const githubBaseUrl = "https://github.com/XzynAstral/xzynastral.github.io";
+                const githubUrlGameUpdates = githubBaseUrl + "game_updates.txt";
+                const githubUrlWebsiteUpdates = githubBaseUrl + "website_updates.txt";
+
+                hideAllContent();
+
+                document.getElementById("gameUpdatesContainer").innerHTML = '<p class="updateContentText">Discover new in-game content, features, and improvements when lv Hood releases exciting game updates!</p>';
+                document.getElementById("websiteUpdatesContainer").innerHTML = '<p class="updateContentText">Stay informed about changes to the lv Hood website, including new features and enhancements!</p>';
+                document.getElementById("updateContent").style.display = "block";
+                document.getElementById("updateTab").style.color = "#7289DA";
+
+                function handleResponse(containerId, data) {
+                    const container = document.getElementById(containerId);
+                    container.innerHTML = `<pre>${data}</pre>`;
+                }
+
+                function handleError(containerId) {
+                    console.error(`Error fetching or displaying content for ${containerId}`);
+                    const errorMessage = '<p class="updateContentText">Error fetching or displaying content</p>';
+                    document.getElementById(containerId).innerHTML = errorMessage;
+                }
+
+                function fetchData(url, containerId) {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("GET", url, false);
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                handleResponse(containerId, xhr.responseText);
+                            } else {
+                                handleError(containerId);
+                            }
+                        }
+                    };
+                    xhr.send();
+                }
+
+                fetchData(githubUrlGameUpdates, "gameUpdatesContainer");
+                fetchData(githubUrlWebsiteUpdates, "websiteUpdatesContainer");
+            }
+
+            function toggleTabs() {
+                const tabs = document.getElementById("tabs");
+
+                if (tabs) {
+                    const tabsOpacity = parseFloat(window.getComputedStyle(tabs).opacity);
+
+                    if (tabsOpacity === 0) {
+                        tabs.style.opacity = "1";
+                        tabs.style.transform = "translateY(0)";
+                    } else {
+                        tabs.style.opacity = "0";
+                        tabs.style.transform = "translateY(-100%)";
+                    }
+                }
+            }
+
+            function hideAllContent() {
+                const tabNames = ["lvHood", "social", "developers", "crews", "update"];
+
+                for (const tabName of tabNames) {
+                    const contentElement = document.getElementById(tabName + "Content");
+                    const tabElement = document.getElementById(tabName + "Tab");
+
+                    if (contentElement && tabElement) {
+                        contentElement.style.display = "none";
+                        contentElement.style.animation = "";
+                        tabElement.style.color = "white";
+                    }
+                }
+            }
+
+            showTab(activeTab);
+        </script>
+    </body>
+</html>
