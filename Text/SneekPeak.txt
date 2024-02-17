@@ -1,7 +1,6 @@
 <div align="center">
-  
   <p>
-    <a href="https://xzynastral.github.io/" target="_blank">
-      <h2>New inventorys soon</h2>
-      <img width="100%" src="https://github.com/XzynAstral/xzynastral.github.io/blob/main/SneakPeekAssets/inv.png?raw=true"></a>
+    <span class="inventory-text">New inventorys soon</span>
+    <img width="100%" src="https://github.com/XzynAstral/xzynastral.github.io/blob/main/SneakPeekAssets/inv.png?raw=true" alt="Inventory Preview">
   </p>
+</div>
