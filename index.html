@@ -243,10 +243,10 @@
                 }
             }
 
+
             function fetchUpdateContent() {
-                const githubBaseUrl = "https://github.com/XzynAstral/xzynastral.github.io/tree/main/";
-                const githubUrlGameUpdates = githubBaseUrl + "game_updates.txt";
-                const githubUrlWebsiteUpdates = githubBaseUrl + "website_updates.txt";
+                const githubUrlGameUpdates = "https://raw.githubusercontent.com/XzynAstral/xzynastral.github.io/main/changelog_files/updates.txt";
+                const githubUrlWebsiteUpdates = "https://raw.githubusercontent.com/XzynAstral/xzynastral.github.io/main/changelog_files/websiteupdates";
 
                 hideAllContent();
 
@@ -268,7 +268,7 @@
 
                 function fetchData(url, containerId) {
                     const xhr = new XMLHttpRequest();
-                    xhr.open("GET", url, false);
+                    xhr.open("GET", url, false); // Make the request synchronous
                     xhr.onreadystatechange = function () {
                         if (xhr.readyState === 4) {
                             if (xhr.status === 200) {
