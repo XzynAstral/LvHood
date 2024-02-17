@@ -1,6 +1,6 @@
 <div align="center">
   <p>
-    <span class="inventory-text">New inventorys soon</span>
+    <span class="inventory-text">New inventory gui soon</span>
     <img width="100%" src="https://github.com/XzynAstral/xzynastral.github.io/blob/main/SneakPeekAssets/inv.png?raw=true" alt="Inventory Preview">
   </p>
 </div>
