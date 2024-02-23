@@ -72,7 +72,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 90%; /* Adjusted for better responsiveness */
             margin: 110px auto 0;
             padding: 20px;
             background: rgba(28, 28, 28, 0.8);
@@ -143,6 +143,10 @@
 
         /* Media Queries */
         @media screen and (max-width: 768px) {
+            .container {
+                max-width: 95%; /* Adjusted for smaller screens */
+            }
+
             #tabs {
                 flex-direction: column;
                 align-items: center;
