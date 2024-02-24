@@ -55,7 +55,6 @@
             margin-left: 20px;
             margin-top: 5px;
             z-index: 9999;
-            display: none; /* Initially hide the menu icon on larger screens */
         }
 
         .tab {
@@ -64,7 +63,7 @@
             text-decoration: none;
             font-size: 16px;
             padding: 10px;
-            transition: color 0.3s ease;
+            transition: color 0.8s ease;
         }
 
         .tab:hover {
@@ -73,8 +72,8 @@
         }
 
         .container {
-            width: 90%;
-            max-width: 800px;
+            width: 90%; /* Adjusted for better responsiveness */
+            max-width: 800px; /* Maintain maximum width for larger screens */
             margin: 110px auto 0;
             padding: 20px;
             background: rgba(28, 28, 28, 0.8);
@@ -145,11 +144,6 @@
 
         /* Media Queries */
         @media screen and (max-width: 768px) {
-            #header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        
             #tabs {
                 flex-direction: column;
                 align-items: center;
@@ -164,23 +158,13 @@
                 opacity: 1;
                 transform: translateY(0);
             }
-        
-            #menuIcon {
-                display: block; /* Show the menu icon on smaller screens */
-            }
-        
-            #tabs {
-                position: fixed;
-                left: 0;
-                right: auto;
-            }
-        
+
             .tab {
                 margin: 5px;
             }
-        
+
             .container {
-                width: 95%;
+                width: 95%; /* Adjusted for smaller screens */
             }
         }
     </style>
@@ -308,7 +292,7 @@
         function fetchUpdateContent() {
             const githubUrlGameUpdates = "https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/updates.txt";
             const githubUrlWebsiteUpdates = "https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/websiteupdates";
-
+            setInterval(fetchUpdateContent, 300000); // Auto-refresh every 5 minutes (adjust as needed)
             hideAllContent();
 
             document.getElementById("gameUpdatesContainer").innerHTML = '<p class="updateContentText">Loading game update content...</p>';
