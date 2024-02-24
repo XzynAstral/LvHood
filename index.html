@@ -145,6 +145,11 @@
 
         /* Media Queries */
         @media screen and (max-width: 768px) {
+            #header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
             #tabs {
                 flex-direction: column;
                 align-items: center;
@@ -162,11 +167,6 @@
 
             #menuIcon {
                 display: block; /* Show the menu icon on smaller screens */
-            }
-
-            #header {
-                flex-direction: column;
-                align-items: flex-start;
             }
 
             .tab {
