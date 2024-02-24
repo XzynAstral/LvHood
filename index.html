@@ -55,6 +55,7 @@
             margin-left: 20px;
             margin-top: 5px;
             z-index: 9999;
+            display: none; /* Initially hide the menu icon on larger screens */
         }
 
         .tab {
@@ -72,8 +73,8 @@
         }
 
         .container {
-            width: 90%; /* Adjusted for better responsiveness */
-            max-width: 800px; /* Maintain maximum width for larger screens */
+            width: 90%;
+            max-width: 800px;
             margin: 110px auto 0;
             padding: 20px;
             background: rgba(28, 28, 28, 0.8);
@@ -159,12 +160,21 @@
                 transform: translateY(0);
             }
 
+            #menuIcon {
+                display: block; /* Show the menu icon on smaller screens */
+            }
+
+            #header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
             .tab {
                 margin: 5px;
             }
 
             .container {
-                width: 95%; /* Adjusted for smaller screens */
+                width: 95%;
             }
         }
     </style>
