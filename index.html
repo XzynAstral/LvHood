@@ -166,24 +166,24 @@
             .container {
                 width: 95%; /* Adjusted for smaller screens */
             }
-        canvas {
-            display: block;
-            margin: auto;
-            background-color: black;
-        }
-        #miniGameTab {
-            cursor: pointer;
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 16px;
-            padding: 10px;
-            transition: color 0.8s ease;
-        }
+            canvas {
+                display: block;
+                margin: auto;
+                background-color: black;
+            }
+            #miniGameTab {
+                cursor: pointer;
+                color: #ffffff;
+                text-decoration: none;
+                font-size: 16px;
+                padding: 10px;
+                transition: color 0.8s ease;
+            }
 
-        #miniGameTab:hover {
-            color: #2a82da;
-            box-shadow: none;
-        }
+            #miniGameTab:hover {
+                color: #2a82da;
+                box-shadow: none;
+            }
         }
     </style>
 </head>
@@ -213,44 +213,57 @@
     <div class="container" id="sneakPeekContent">
         <h1>lv Hood - Sneak Peek</h1>
     </div>
-
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
 
-        const WIDTH = 600, HEIGHT = 400;
-        const WHITE = '#ffffff';
-        const BLACK = '#000000';
-        const RED = '#ff0000';
+        const WIDTH = canvas.width;
+        const HEIGHT = canvas.height;
+        const BACKGROUND_COLOR = '#282c34';
+        const PADDLE_COLOR = '#61dafb';
+        const BALL_COLOR = '#ff0000';
+        const TEXT_COLOR = '#61dafb';
 
         let gameStarted = false;
 
-        // Ball properties
         let ballPos = [WIDTH / 2, HEIGHT / 4];
-        let ballSpeed = [2, 2]; 
+        let ballSpeed = [2, 2];
         let ballRadius = 20;
 
-        
-        let boxWidth = 50, boxHeight = 50;
-        let boxPos = { x: WIDTH / 2 - boxWidth / 2, y: HEIGHT - boxHeight };
-        let boxSpeed = 6; 
-        const boxSpeedIncrease = 0.05;
+        let paddleWidth = 80;
+        let paddleHeight = 10;
+        let paddlePos = { x: WIDTH / 2 - paddleWidth / 2, y: HEIGHT - paddleHeight };
+        let paddleSpeed = 6;
+        const paddleSpeedIncrease = 0.1;
 
-        // Scoring
         let score = 0;
         let bestScore = 0;
 
         let moveDirection = 0;
 
         let lastTimestamp = 0;
+        const audio = new Audio('https://raw.githubusercontent.com/XzynAstral/xzynastral.github.io/main/Text/GameAudio.mp3');
+        audio.loop = true; 
+        audio.volume = 0.5;
 
+        function playBackgroundMusic() {
+            audio.play().catch(error => {
+                console.error('Error playing audio:', error.message);
+            });
+        }
+        function pauseBackgroundMusic() {
+            audio.pause();
+        }
         function resetGame() {
             ballPos = [WIDTH / 2, HEIGHT / 4];
-            ballSpeed = [2, 2]; 
-            boxPos = { x: WIDTH / 2 - boxWidth / 2, y: HEIGHT - boxHeight };
+            ballSpeed = [2, 2];
+            paddlePos = { x: WIDTH / 2 - paddleWidth / 2, y: HEIGHT - paddleHeight };
             ballRadius = 20;
-            boxSpeed = 6; 
+            paddleSpeed = 6;
             score = 0;
+
+            audio.currentTime = 0; 
+            audio.play();
         }
 
         function gameLoop(timestamp) {
@@ -274,21 +287,27 @@
                 }
 
                 if (
-                    boxPos.x < ballPos[0] + ballRadius &&
-                    boxPos.x + boxWidth > ballPos[0] - ballRadius &&
-                    boxPos.y < ballPos[1] + ballRadius &&
-                    boxPos.y + boxHeight > ballPos[1] - ballRadius
+                    paddlePos.x < ballPos[0] + ballRadius &&
+                    paddlePos.x + paddleWidth > ballPos[0] - ballRadius &&
+                    paddlePos.y < ballPos[1] + ballRadius &&
+                    paddlePos.y + paddleHeight > ballPos[1] - ballRadius
                 ) {
-                    ballSpeed[1] = -ballSpeed[1];
+                    const relativeIntersectX = ballPos[0] - (paddlePos.x + paddleWidth / 2);
+                    const normalizedRelativeIntersectionX = relativeIntersectX / (paddleWidth / 2);
 
-                    ballSpeed[0] += Math.random() * 0.1 - 0.05;
-                    ballSpeed[1] += Math.random() * 0.1 - 0.05;
-                    boxSpeed += boxSpeedIncrease;
+                    ballSpeed[0] = normalizedRelativeIntersectionX * 5;
+                    ballSpeed[1] = -Math.abs(ballSpeed[1]);
+
+                    const constantSpeed = 5;
+                    ballSpeed[1] = -Math.abs(constantSpeed);
+
+                    ballSpeed[0] += 0.2; 
+                    ballSpeed[1] += 0.2;
+                    paddleSpeed += paddleSpeedIncrease;
                     score++;
 
-                    ballPos[1] = boxPos.y - ballRadius - 1;
+                    ballPos[1] = paddlePos.y - ballRadius - 1;
                 }
-
                 if (ballPos[1] + ballRadius > HEIGHT) {
                     if (score > bestScore) {
                         bestScore = score;
@@ -296,32 +315,34 @@
                     resetGame();
                 }
 
-                boxPos.x += moveDirection * boxSpeed * (deltaTime / 16);
-                boxPos.x = Math.max(0, Math.min(WIDTH - boxWidth, boxPos.x));
+                paddlePos.x += moveDirection * paddleSpeed * (deltaTime / 16);
+                paddlePos.x = Math.max(0, Math.min(WIDTH - paddleWidth, paddlePos.x));
             }
 
-            ctx.fillStyle = BLACK;
+            ctx.fillStyle = BACKGROUND_COLOR;
             ctx.fillRect(0, 0, WIDTH, HEIGHT);
 
-            ctx.fillStyle = WHITE;
-            ctx.fillRect(boxPos.x, boxPos.y, boxWidth, boxHeight);
+            ctx.fillStyle = PADDLE_COLOR;
+            ctx.fillRect(paddlePos.x, paddlePos.y, paddleWidth, paddleHeight);
 
-            ctx.fillStyle = RED;
+            ctx.fillStyle = BALL_COLOR;
             ctx.beginPath();
             ctx.arc(ballPos[0], ballPos[1], ballRadius, 0, 2 * Math.PI);
             ctx.fill();
 
-            ctx.fillStyle = WHITE;
+            ctx.fillStyle = TEXT_COLOR;
             ctx.font = 'bold 20px Arial';
             ctx.fillText(`Score: ${score}`, 10, 20);
 
             requestAnimationFrame(gameLoop);
         }
 
+        // Keyboard Event Listeners
         window.addEventListener('keydown', function (event) {
             const keyCode = event.keyCode;
             if (!gameStarted) {
                 gameStarted = true;
+                playBackgroundMusic()
             }
 
             if (keyCode === 37 || keyCode === 65) {
@@ -339,6 +360,7 @@
             }
         });
 
+        // Touch Event Listeners
         let touchStartX = 0;
 
         window.addEventListener('touchstart', function (event) {
@@ -365,8 +387,22 @@
 
         window.addEventListener('touchend', function () {
             moveDirection = 0;
+            playBackgroundMusic()
         });
-
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                // Page is hidden, pause the game
+                gameStarted = false;
+                pauseBackgroundMusic(); // Pause background music if playing
+            } else {
+                // Page is visible, resume the game
+                if (!gameStarted) {
+                    gameStarted = true;
+                    playBackgroundMusic(); // Resume background music if paused
+                }
+            }
+        });
+        // Initialize the game loop
         requestAnimationFrame(gameLoop);
 
         function showTab(tabName) {
@@ -377,7 +413,7 @@
 
             document.getElementById(tabName).style.display = 'block';
         }
-    </script>
+        </script>
 
     <div class="container" id="socialContent">
         <h1>lv Hood - Social Media</h1>
