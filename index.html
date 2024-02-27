@@ -5,7 +5,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>lv Hood</title>
-    <!-- Google Fonts - Roboto and Noto Sans -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" />
 
@@ -63,7 +62,7 @@
             text-decoration: none;
             font-size: 16px;
             padding: 10px;
-            transition: color 0.8s ease;
+            transition: color 0.3s ease;
         }
 
         .tab:hover {
@@ -72,8 +71,7 @@
         }
 
         .container {
-            width: 90%; /* Adjusted for better responsiveness */
-            max-width: 800px; /* Maintain maximum width for larger screens */
+            max-width: 800px;
             margin: 110px auto 0;
             padding: 20px;
             background: rgba(28, 28, 28, 0.8);
@@ -141,50 +139,6 @@
             color: #ffffff;
             font-size: 14px;
         }
-
-        /* Media Queries */
-        @media screen and (max-width: 768px) {
-            #tabs {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                background: #1a1a1a;
-                padding: 10px;
-                position: fixed;
-                top: 50px;
-                left: 0;
-                right: 0;
-                z-index: 3;
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            .tab {
-                margin: 5px;
-            }
-
-            .container {
-                width: 95%; /* Adjusted for smaller screens */
-            }
-            canvas {
-                display: block;
-                margin: auto;
-                background-color: black;
-            }
-            #miniGameTab {
-                cursor: pointer;
-                color: #ffffff;
-                text-decoration: none;
-                font-size: 16px;
-                padding: 10px;
-                transition: color 0.8s ease;
-            }
-
-            #miniGameTab:hover {
-                color: #2a82da;
-                box-shadow: none;
-            }
-        }
     </style>
 </head>
 
@@ -198,222 +152,17 @@
             <div class="tab" id="crewsTab" onclick="showTab('crews')">Join a Crew</div>
             <div class="tab" id="updateTab" onclick="fetchUpdateContent()">Latest Updates</div>
             <div class="tab" id="sneakPeekTab" onclick="fetchSneakPeekContent()">Sneak Peek</div>
-            <div class="tab" id="miniGameTab" onclick="showTab('miniGame')">Mini Game</div>
         </div>
     </div>
     <div class="container" id="lvHoodContent">
         <h1>lv Hood - Game Info</h1>
         <p>Discover the thrilling world of lv Hood, where intense gunfights and stomping wars await you. Experience custom stomp effects and become part of the lv Hood community!</p>
-        <a id="joinButton" href="https://discord.gg/upjXdmEzKp" target="_blank">Join Hood Studios Entertainment Discord</a>
+        <a id="joinButton" href="https://discord.com/invite/DrPBvbTnj4" target="_blank">Join Hood Studios Entertainment Discord</a>
     </div>
-    <div class="container" id="miniGameContent">
-        <h1>Mini Game - Bouncing Ball and Box</h1>
-        <canvas id="gameCanvas" width="600" height="400"></canvas>
-    </div>
+
     <div class="container" id="sneakPeekContent">
-        <h1>lv Hood - Sneak Peek</h1>
+        <!-- Content will be dynamically added here -->
     </div>
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-
-        const WIDTH = canvas.width;
-        const HEIGHT = canvas.height;
-        const BACKGROUND_COLOR = '#282c34';
-        const PADDLE_COLOR = '#61dafb';
-        const BALL_COLOR = '#ff0000';
-        const TEXT_COLOR = '#61dafb';
-
-        let gameStarted = false;
-
-        let ballPos = [WIDTH / 2, HEIGHT / 4];
-        let ballSpeed = [2, 2];
-        let ballRadius = 20;
-
-        let paddleWidth = 80;
-        let paddleHeight = 10;
-        let paddlePos = { x: WIDTH / 2 - paddleWidth / 2, y: HEIGHT - paddleHeight };
-        let paddleSpeed = 6;
-        const paddleSpeedIncrease = 0.1;
-
-        let score = 0;
-        let bestScore = 0;
-
-        let moveDirection = 0;
-
-        let lastTimestamp = 0;
-        const audio = new Audio('https://raw.githubusercontent.com/XzynAstral/xzynastral.github.io/main/Text/GameAudio.mp3');
-        audio.loop = true; 
-        audio.volume = 0.5;
-
-        function playBackgroundMusic() {
-            audio.play().catch(error => {
-                console.error('Error playing audio:', error.message);
-            });
-        }
-        function pauseBackgroundMusic() {
-            audio.pause();
-        }
-        function resetGame() {
-            ballPos = [WIDTH / 2, HEIGHT / 4];
-            ballSpeed = [2, 2];
-            paddlePos = { x: WIDTH / 2 - paddleWidth / 2, y: HEIGHT - paddleHeight };
-            ballRadius = 20;
-            paddleSpeed = 6;
-            score = 0;
-
-            audio.currentTime = 0; 
-            audio.play();
-        }
-
-        function gameLoop(timestamp) {
-            if (!lastTimestamp) {
-                lastTimestamp = timestamp;
-            }
-
-            const deltaTime = timestamp - lastTimestamp;
-            lastTimestamp = timestamp;
-
-            if (gameStarted) {
-                ballPos[0] += ballSpeed[0] * (deltaTime / 16);
-                ballPos[1] += ballSpeed[1] * (deltaTime / 16);
-
-                if (ballPos[0] - ballRadius < 0 || ballPos[0] + ballRadius > WIDTH) {
-                    ballSpeed[0] = -ballSpeed[0];
-                }
-
-                if (ballPos[1] - ballRadius < 0) {
-                    ballSpeed[1] = -ballSpeed[1];
-                }
-
-                if (
-                    paddlePos.x < ballPos[0] + ballRadius &&
-                    paddlePos.x + paddleWidth > ballPos[0] - ballRadius &&
-                    paddlePos.y < ballPos[1] + ballRadius &&
-                    paddlePos.y + paddleHeight > ballPos[1] - ballRadius
-                ) {
-                    const relativeIntersectX = ballPos[0] - (paddlePos.x + paddleWidth / 2);
-                    const normalizedRelativeIntersectionX = relativeIntersectX / (paddleWidth / 2);
-
-                    ballSpeed[0] = normalizedRelativeIntersectionX * 5;
-                    ballSpeed[1] = -Math.abs(ballSpeed[1]);
-
-                    const constantSpeed = 5;
-                    ballSpeed[1] = -Math.abs(constantSpeed);
-
-                    ballSpeed[0] += 0.2; 
-                    ballSpeed[1] += 0.2;
-                    paddleSpeed += paddleSpeedIncrease;
-                    score++;
-
-                    ballPos[1] = paddlePos.y - ballRadius - 1;
-                }
-                if (ballPos[1] + ballRadius > HEIGHT) {
-                    if (score > bestScore) {
-                        bestScore = score;
-                    }
-                    resetGame();
-                }
-
-                paddlePos.x += moveDirection * paddleSpeed * (deltaTime / 16);
-                paddlePos.x = Math.max(0, Math.min(WIDTH - paddleWidth, paddlePos.x));
-            }
-
-            ctx.fillStyle = BACKGROUND_COLOR;
-            ctx.fillRect(0, 0, WIDTH, HEIGHT);
-
-            ctx.fillStyle = PADDLE_COLOR;
-            ctx.fillRect(paddlePos.x, paddlePos.y, paddleWidth, paddleHeight);
-
-            ctx.fillStyle = BALL_COLOR;
-            ctx.beginPath();
-            ctx.arc(ballPos[0], ballPos[1], ballRadius, 0, 2 * Math.PI);
-            ctx.fill();
-
-            ctx.fillStyle = TEXT_COLOR;
-            ctx.font = 'bold 20px Arial';
-            ctx.fillText(`Score: ${score}`, 10, 20);
-
-            requestAnimationFrame(gameLoop);
-        }
-
-        // Keyboard Event Listeners
-        window.addEventListener('keydown', function (event) {
-            const keyCode = event.keyCode;
-            if (!gameStarted) {
-                gameStarted = true;
-                playBackgroundMusic()
-            }
-
-            if (keyCode === 37 || keyCode === 65) {
-                moveDirection = -1;
-            } else if (keyCode === 39 || keyCode === 68) {
-                moveDirection = 1;
-            }
-        });
-
-        window.addEventListener('keyup', function (event) {
-            const keyCode = event.keyCode;
-            if ((keyCode === 37 || keyCode === 65) && moveDirection === -1 ||
-                (keyCode === 39 || keyCode === 68) && moveDirection === 1) {
-                moveDirection = 0;
-            }
-        });
-
-        // Touch Event Listeners
-        let touchStartX = 0;
-
-        window.addEventListener('touchstart', function (event) {
-            touchStartX = event.touches[0].clientX;
-            if (!gameStarted) {
-                gameStarted = true;
-            }
-        });
-
-        window.addEventListener('touchmove', function (event) {
-            const touchX = event.touches[0].clientX;
-            const deltaX = touchX - touchStartX;
-
-            const threshold = 10;
-
-            if (deltaX > threshold) {
-                moveDirection = 1;
-            } else if (deltaX < -threshold) {
-                moveDirection = -1;
-            } else {
-                moveDirection = 0;
-            }
-        });
-
-        window.addEventListener('touchend', function () {
-            moveDirection = 0;
-            playBackgroundMusic()
-        });
-        document.addEventListener('visibilitychange', function () {
-            if (document.hidden) {
-                // Page is hidden, pause the game
-                gameStarted = false;
-                pauseBackgroundMusic(); // Pause background music if playing
-            } else {
-                // Page is visible, resume the game
-                if (!gameStarted) {
-                    gameStarted = true;
-                    playBackgroundMusic(); // Resume background music if paused
-                }
-            }
-        });
-        // Initialize the game loop
-        requestAnimationFrame(gameLoop);
-
-        function showTab(tabName) {
-            const tabs = ['miniGameContent'];
-            tabs.forEach(tab => {
-                document.getElementById(tab).style.display = 'none';
-            });
-
-            document.getElementById(tabName).style.display = 'block';
-        }
-        </script>
 
     <div class="container" id="socialContent">
         <h1>lv Hood - Social Media</h1>
@@ -449,9 +198,8 @@
         <h1>lv Hood - Join a Crew</h1>
         <p>Explore the lv Hood crews and choose the one that suits you:</p>
         <ul>
-            <li><a href="" target="_blank">YZNS Crew sooon</a></li>
-            <li><a href="https://discord.gg/6Nb4sNRPeJ" target="_blank">死 Cursed Spirits Crew</a></li>
-            <li><a href="https://discord.gg/g549adYx6u" target="_blank">CXRSED LV Crew</a></li>
+            <li><a href="https://www.roblox.com/groups/16218098/Xzyn-alt-shop#!/about" target="_blank">YZNS Crew</a></li>
+            <li><a href="https://www.roblox.com/groups/33832534/Cursed#!/about" target="_blank">死 Cursed Spirits Crew</a></li>
         </ul>
     </div>
 
@@ -470,52 +218,44 @@
     </div>
     <script>
         const activeTab = sessionStorage.getItem("activeTab") || "lvHood";
-
+    
         function showTab(tabName) {
             hideAllContent();
-
+    
             const contentElement = document.getElementById(tabName + "Content");
             const tabElement = document.getElementById(tabName + "Tab");
-
+    
             if (contentElement && tabElement) {
                 contentElement.style.display = "block";
                 contentElement.style.animation = "fadeIn 0.8s ease-in-out forwards";
-
+    
                 tabElement.style.color = "#7289DA";
-
+    
                 sessionStorage.setItem("activeTab", tabName);
             }
         }
-
-        async function fetchData(url, containerId) {
+    
+        async function fetchDataFromGitHub(filePath, containerId) {
+            const githubApiUrl = `https://api.github.com/repos/XzynAstral/xzynastral.github.io/contents/${filePath}?ref=main`;
+    
             try {
-                const response = await fetch(url);
+                const response = await fetch(githubApiUrl);
                 if (!response.ok) {
                     throw new Error(`Failed to fetch data for ${containerId}`);
                 }
-                const data = await response.text();
-                handleResponse(containerId, data);
+                const data = await response.json();
+                const content = atob(data.content);
+                handleResponse(containerId, content);
             } catch (error) {
                 handleError(containerId);
                 console.error(error);
             }
         }
-
-        function handleResponse(containerId, data) {
-            const container = document.getElementById(containerId);
-            container.innerHTML = `<pre>${data}</pre>`;
-        }
-
-        function handleError(containerId) {
-            console.error(`Error fetching or displaying content for ${containerId}`);
-            const errorMessage = '<p class="updateContentText">Error fetching or displaying content</p>';
-            document.getElementById(containerId).innerHTML = errorMessage;
-        }
-
+    
         function fetchUpdateContent() {
-            const githubUrlGameUpdates = "https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/updates.txt";
-            const githubUrlWebsiteUpdates = "https://raw.githubusercontent.com/XzynAstral/WebsiteCode/main/websiteupdates";
-            setInterval(fetchUpdateContent, 300000); // Auto-refresh every 5 minutes (adjust as needed)
+            const githubFilePathGameUpdates = "changelog_files/updates.txt";
+            const githubFilePathWebsiteUpdates = "changelog_files/websiteupdates";
+
             hideAllContent();
 
             document.getElementById("gameUpdatesContainer").innerHTML = '<p class="updateContentText">Loading game update content...</p>';
@@ -523,10 +263,9 @@
             document.getElementById("updateContent").style.display = "block";
             document.getElementById("updateTab").style.color = "#7289DA";
 
-            fetchData(githubUrlGameUpdates, "gameUpdatesContainer");
-            fetchData(githubUrlWebsiteUpdates, "websiteUpdatesContainer");
+            fetchDataFromGitHub(githubFilePathGameUpdates, "gameUpdatesContainer");
+            fetchDataFromGitHub(githubFilePathWebsiteUpdates, "websiteUpdatesContainer");
         }
-
         async function fetchSneakPeekContent() {
             hideAllContent();
 
@@ -546,6 +285,17 @@
             }
         }
 
+        function handleResponse(containerId, data) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `<pre>${data}</pre>`;
+        }
+    
+        function handleError(containerId) {
+            console.error(`Error fetching or displaying content for ${containerId}`);
+            const errorMessage = '<p class="updateContentText">Error fetching or displaying content</p>';
+            document.getElementById(containerId).innerHTML = errorMessage;
+        }
+
         function handleSneakPeekResponse(data) {
             const container = document.getElementById("sneakPeekContent");
 
@@ -563,13 +313,13 @@
             document.getElementById("sneakPeekTab").style.color = "#7289DA";
         }
 
-
+    
         function toggleTabs() {
             const tabs = document.getElementById("tabs");
-
+    
             if (tabs) {
                 const tabsOpacity = parseFloat(window.getComputedStyle(tabs).opacity);
-
+    
                 if (tabsOpacity === 0) {
                     tabs.style.opacity = "1";
                     tabs.style.transform = "translateY(0)";
@@ -579,14 +329,14 @@
                 }
             }
         }
-
+    
         function hideAllContent() {
             const tabNames = ["lvHood", "social", "developers", "crews", "update", "sneakPeek"];
-
+    
             for (const tabName of tabNames) {
                 const contentElement = document.getElementById(tabName + "Content");
                 const tabElement = document.getElementById(tabName + "Tab");
-
+    
                 if (contentElement && tabElement) {
                     contentElement.style.display = "none";
                     contentElement.style.animation = "";
@@ -594,17 +344,14 @@
                 }
             }
         }
-
+    
         document.addEventListener("DOMContentLoaded", function () {
             showTab(activeTab);
         });
-
-        // Event listener for the Sneak Peek tab
+    
         document.getElementById("sneakPeekTab").addEventListener("click", function () {
             fetchSneakPeekContent();
             showTab("sneakPeek");
         });
     </script>
-    
-
-</html> 
+</html>
